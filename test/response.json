@@ -1,0 +1,27 @@
+{
+    "monthProfitStr": "€11.6",
+    "todayProfitStr": "€1.7",
+    "plantNumber": 1,
+    "treeValue": "8.1",
+    "treeStr": "8",
+    "nominalPowerStr": "1.9kW",
+    "eventMessBeanList":[],
+    "yearValue":"0.0",
+    "formulaCo2Vlue":"0.0",
+    "formulaCo2Str": "0kg",
+    "todayValue": "7.4",
+    "totalStr": "148kWh",
+    "powerValue": "67.0",
+    "totalValue": "148.0",
+    "nominalPowerValue": "1890.0",
+    "powerValueStr": "0kW",
+    "monthValue": "50.5",
+    "todayStr": "7.4kWh",
+    "monthStr": "50.5kWh",
+    "formulaCoalStr": "0kg",
+    "alarmValue": 0,
+    "totalProfitStr": "€34",
+    "yearStr": "0kWh",
+    "formulaCoalValue": "0.0"
+}
+
