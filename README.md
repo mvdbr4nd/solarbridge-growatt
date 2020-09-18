@@ -27,9 +27,11 @@ Each pulse/flash will suggest 1 Watt
                  PC817 p4 ------ Outer (2x)     
  
 ### Optional
-On GPIO 4 a resistor (330 ohm and red LED are connected in series 
-PIN D2 ----  Resistor 33Ohm) ---- (Long LED lead ---- LED ---- Short LED Lead) ----- GND
-Note: by setting Led to BUILT_INLED you can use the internal led on the print of the wemos instead of this external LED. 
+On GPIO 4 a resistor (330 ohm and red LED are connected in series:
+
+    PIN D2 ----  Resistor 33Ohm) ---- (Long LED lead ---- LED ---- Short LED Lead) ----- GND
+
+_by setting Led to BUILT_INLED you can use the internal led on the print of the wemos instead of this external LED_
 
 ### Instructions
 
