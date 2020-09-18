@@ -11,7 +11,9 @@ bool ConnectionPossible=false;
 bool reset1 = false;
 bool reset2 = false;
 
-int led = D2; 
+// You can select BUILTIN_LED or D2 to toggle the led for status indication. 
+// which means you don't need to wire D1 to an external LED and resistor. 
+int led = BUILTIN_LED; // D2; 
 int meteradapter = D1; 
 
 unsigned long startMillis;    //some global variables available anywhere in the program
@@ -156,13 +158,23 @@ void setup() {
 }
 
 void blinkled() {
-	digitalWrite(led, HIGH);    
+	if (led != LED_BUILTIN) {
+		digitalWrite(led, HIGH);    
+	}
+	else {
+		digitalWrite(led, LOW);    
+	}
+	
 	digitalWrite(meteradapter, HIGH);
-	//digitalWrite(LED_BUILTIN, LOW);
 	delay(100);                             
-	digitalWrite(led, LOW);        
 	digitalWrite(meteradapter, LOW);
-	//digitalWrite(LED_BUILTIN, HIGH);
+	
+	if (led != LED_BUILTIN) {
+		digitalWrite(led, LOW);
+	} 
+	else {
+		digitalWrite(led, HIGH);
+	}	
 }
 
 void loop() {

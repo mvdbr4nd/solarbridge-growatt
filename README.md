@@ -14,19 +14,21 @@ Forked from: SolarBridge v2.2.1 by Oepi-Loepi
 This bridge will get the data from the GroWatt web interface (API) and create S0 pulses and led flashes
 Each pulse/flash will suggest 1 Watt
 
-On GPIO 4 a resistor (330 ohm and red LED are connected in series 
-PIN D2 ----  Resistor 33Ohm) ---- (Long LED lead ---- LED ---- Short LED Lead) ----- GND
- 
 On GPIO 5 a PC817 optocoupler is connected
 PIN D1 ----  PC817 (anode, pin 1, spot)
 GND -------  PC817 (cathode, pin 2)
+
+             PC817 p3 ------ Inner          3,5mm stereo jack plug
+             PC817 p4 ------ Outer (2x)     
  
-Pin 3 and 4 of the PC817 will be a potential free contact
- 
+Optional:
+On GPIO 4 a resistor (330 ohm and red LED are connected in series 
+PIN D2 ----  Resistor 33Ohm) ---- (Long LED lead ---- LED ---- Short LED Lead) ----- GND
+Note: by setting Led to BUILT_INLED you can use the internal led on the print of the wemos instead of this external LED. 
+
 After uploading the sketch to the Wemos D1 mini, connect to the AutoConnectAP wifi. 
 Goto 192.168.4.1 in a webbrowser and fill in all data including GroWatt credentials.
 
 Note:
 - Settings are saved on the Flash (wemos mini) and will reloaded from startup. 
 - Resetting the bridge will clear all settings (WIFI and Username Password).
-- The external LED is optional, you can also use the internal buildin led (see blinkled function)
