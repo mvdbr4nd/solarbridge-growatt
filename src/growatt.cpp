@@ -132,7 +132,7 @@ void getdata() {
 
 					MaxNumberofCorrections = NumberofPeriodSinceUpdate;
 	
-					NumberofPeriodSinceUpdate=0;                         //reset the number of periods since last update
+					NumberofPeriodSinceUpdate=0; //reset the number of periods since last update
 					PrevDayTotal = NewDayTotal;
 				}
 
@@ -146,11 +146,12 @@ void getdata() {
 				Serial.println(ActualPower);
 
 				if (ActualPower > 1) {
+					ActualPowerZero = false;
 					if (NumberofPeriodSinceUpdate <= MaxNumberofCorrections){
-						CorrectedPowerNextPeriod =     ActualPower +    PowerCorrection;
+						CorrectedPowerNextPeriod = ActualPower + PowerCorrection;
 					}
 					else{
-						CorrectedPowerNextPeriod =     ActualPower +    PowerCorrection;
+						CorrectedPowerNextPeriod = ActualPower + PowerCorrection;
 					}
 					Serial.print("CorrectedPowerNextPeriod :");
 					Serial.println(CorrectedPowerNextPeriod);
@@ -160,7 +161,9 @@ void getdata() {
 					Serial.println(timebetweenpulses);
 				}
 				else{
-					timebetweenpulses = 360000; //1 hour interval when ActualPower = 0
+					//1 hour interval when ActualPower = 0
+					ActualPowerZero = true;
+					timebetweenpulses = 360000;
 					CorrectedPowerNextPeriod = 0;
 					PowerCorrection = 0;
 				}
