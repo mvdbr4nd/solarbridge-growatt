@@ -7,6 +7,8 @@ String todayval = "Not Connected Yet";
 String monthval= "Not Connected Yet";
 bool cookiestep= false;
 
+WiFiClient client;
+
 void getdata() {
 	//get new data from the growatt server.
 	
@@ -18,7 +20,7 @@ void getdata() {
 
 	char character;
 	String pwd = "";
-	for(int i = 0; i < password.length(); i=i+2){    //replacing leading 0 for c
+	for(unsigned int i = 0; i < password.length(); i=i+2){    //replacing leading 0 for c
 		if (password[i]=='0'){
 				character = 'c';
 		}else{
@@ -31,8 +33,8 @@ void getdata() {
 	HTTPClient http;
 	const char * headerkeys[] = {"User-Agent","Set-Cookie","Cookie","Date","Content-Type","Connection"} ;
 	size_t headerkeyssize = sizeof(headerkeys)/sizeof(char*);
-
-	http.begin("http://server.growatt.com/LoginAPI.do");
+	
+	http.begin(client, "http://server.growatt.com/LoginAPI.do");
 	http.setReuse(true);
 	http.setUserAgent("Dalvik/2.1.0 (Linux; U; Android 9; ONEPLUS A6003 Build/PKQ1.180716.001");
 	http.addHeader("Content-type", "application/x-www-form-urlencoded");
@@ -57,7 +59,7 @@ void getdata() {
 		}
 	}
 
-	http.begin("http://server-api.growatt.com/newPlantAPI.do?action=getUserCenterEnertyData");
+	http.begin(client, "http://server-api.growatt.com/newPlantAPI.do?action=getUserCenterEnertyData");
 	http.addHeader("Cookie", "JSESSIONID="    + JSESSIONID + ";" + "SERVERID="    + SERVERID);
 	http.setReuse(true);
 	http.setUserAgent("Dalvik/2.1.0 (Linux; U; Android 9; ONEPLUS A6003 Build/PKQ1.180716.001");

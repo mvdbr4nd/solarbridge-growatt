@@ -3,6 +3,8 @@
 #include <DNSServer.h>
 #include <WiFiManager.h>         
 #include <ArduinoJson.h> 
+#include <ArduinoOTA.h>
+
 
 // global variables
 extern char username[60];
@@ -33,3 +35,11 @@ extern bool newday;
 extern bool ActualPowerZero;
 
 extern WiFiServer server;
+
+//forward declerations
+void setup_OTA();
+void blinkled(); 
+void loop(); 
+void setup();
+void saveConfigCallback();
+void configModeCallback();

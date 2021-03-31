@@ -2,6 +2,10 @@
 #include <growatt.h>
 #include <webserver.h>
 
+#include <LittleFS.h>
+FS* fileSystem = &LittleFS;
+LittleFSConfig fileSystemConfig = LittleFSConfig();
+
 // global variables
 char username[60] = "";
 char password[60] = "";
@@ -13,7 +17,7 @@ bool reset2 = false;
 
 // You can select BUILTIN_LED or D2 to toggle the led for status indication. 
 // which means you don't need to wire D1 to an external LED and resistor. 
-int led = D2; // BUILTIN_LED;
+int led = D2; 			// BUILTIN_LED;
 int meteradapter = D1; 
 
 unsigned long startMillis;    //some global variables available anywhere in the program
@@ -65,14 +69,17 @@ void setup() {
 	pinMode(meteradapter, OUTPUT);
   	digitalWrite(meteradapter, HIGH);
 
+	fileSystemConfig.setAutoFormat(true);
+	fileSystem->setConfig(fileSystemConfig);
+
 	//read configuration from FS json
 	Serial.println("mounting FS...");
-	if (SPIFFS.begin()) {
+	if (fileSystem->begin()) {
 		Serial.println("mounted file system");
-		if (SPIFFS.exists("/config.json")) {
+		if (fileSystem->exists("/config.json")) {
 			//file exists, reading and loading
 			Serial.println("reading config file");
-			File configFile = SPIFFS.open("/config.json", "r");
+			File configFile = fileSystem->open("/config.json", "r");
 			if (configFile) {
 				Serial.println("opened config file");
 
@@ -139,7 +146,7 @@ void setup() {
 		doc["username"] = username;
 		doc["password"] = password;
 		
-		File configFile = SPIFFS.open("/config.json", "w");
+		File configFile = fileSystem->open("/config.json", "w");
 		if (!configFile) {
 			Serial.println("failed to open config file for writing");
 		}
@@ -153,9 +160,45 @@ void setup() {
 		configFile.close();
 		//end save
 	}
-
 	WiFi.begin();
+
+  	// OTA support
+  	setup_OTA();
+
 	server.begin();
+}
+
+void setup_OTA() {
+	// Port defaults to 8266
+	// ArduinoOTA.setPort(8266);
+
+	// Hostname defaults to esp8266-[ChipID]
+	// ArduinoOTA.setHostname("myesp8266");
+
+	// No authentication by default
+	// ArduinoOTA.setPassword((const char *)"123");
+
+  	ArduinoOTA.onStart([]() {
+    	Serial.println("Start");
+  	});
+  	ArduinoOTA.onEnd([]() {
+    	Serial.println("\nEnd");
+  	});
+  	ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
+    	Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
+  	});
+  	ArduinoOTA.onError([](ota_error_t error) {
+    Serial.printf("Error[%u]: ", error);
+    if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
+		else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
+		else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
+		else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
+		else if (error == OTA_END_ERROR) Serial.println("End Failed");
+	});
+	ArduinoOTA.begin();
+	Serial.println("Ready");
+	Serial.print("IP address: ");
+	Serial.println(WiFi.localIP());
 }
 
 void blinkled() {
@@ -182,11 +225,15 @@ void loop() {
 	// put your main code here, to run repeatedly:
 	webserver();
  
+  	// handle OTA if needed
+  	ArduinoOTA.handle();
+	yield();
+
 	if ((reset1) && (reset2)) { 
 			delay(2000);
 			Serial.println("Reset requested");
 			Serial.println("deleting configuration file");
-			SPIFFS.remove("/config.json");
+			fileSystem->remove("/config.json");
 			WiFiManager wifiManager;
 			wifiManager.resetSettings();
 			delay(500);
