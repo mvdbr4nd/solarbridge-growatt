@@ -38,6 +38,9 @@ _by setting Led to BUILT_INLED you can use the internal led on the print of the 
 After uploading the sketch to the Wemos D1 mini, connect to the AutoConnectAP wifi. 
 Goto 192.168.4.1 in a webbrowser and fill in all data including GroWatt credentials.
 
+### Firmware updating
+Added OTA (Over the Air update) support use the platformIO configuration defined in the INI file to configure hostname or IP adress of the bridge to send firmware updates over the air. 
+
 ## Notes
 - Settings are saved on the Flash (wemos mini) and will reloaded from startup. 
 - Resetting the bridge will clear all settings (WIFI and Username Password).
